@@ -33,7 +33,14 @@ jobs:
           npm install --save-dev --ignore-scripts --legacy-peer-deps @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
 
       - name: Build UniMeet web bundle with Firebase SDK
-        run: npm run build
+        run: |
+          # Release builds (v* tags) embed their version so the app can show an update notice;
+          # other builds leave it empty, which turns the update check off.
+          if [[ "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            export VITE_APP_VERSION="${GITHUB_REF_NAME#v}"
+          fi
+          echo "VITE_APP_VERSION=${VITE_APP_VERSION:-<none>}"
+          npm run build
 
       - name: Prepare Android web app bundle
         run: |
@@ -154,7 +161,17 @@ jobs:
           }
           """
           if "signingConfigs.release" not in gradle_text:
-              gradle_path.write_text(gradle_text + "\n" + signing_block, encoding="utf-8")
+              gradle_text = gradle_text + "\n" + signing_block
+
+          # 4. Increasing versionCode (run number) + versionName from the v* tag, so Android
+          #    treats each build as a newer version and installs it over the previous one.
+          run_number = int(os.environ.get("GITHUB_RUN_NUMBER", "1"))
+          ref_name = os.environ.get("GITHUB_REF_NAME", "")
+          version_name = ref_name[1:] if re.fullmatch(r"v\d+(\.\d+)*", ref_name) else f"0.0.{run_number}"
+          gradle_text = re.sub(r"versionCode\s+\d+", f"versionCode {run_number}", gradle_text, count=1)
+          gradle_text = re.sub(r'versionName\s+"[^"]*"', f'versionName "{version_name}"', gradle_text, count=1)
+          gradle_path.write_text(gradle_text, encoding="utf-8")
+          print(f"Android versionCode={run_number} versionName={version_name}")
           PY
 
       - name: Build signed release APK

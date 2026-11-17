@@ -22,7 +22,7 @@
   }
 
   .discover-stage {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
   }
 
@@ -45,7 +45,7 @@
   }
 
   .feed-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .feed-side-rail {
@@ -60,61 +60,75 @@
 }
 
 @media (max-width: 860px) {
-  /* Mobile & Tablet Authentication: Signature dark grid backdrop + compact logo + ~90% centered card */
+  /* Mobile & Tablet Authentication: ONE full-width column.
+     The left branding panel (.auth-aside) and the dark mobile bar are removed from layout entirely;
+     the light form panel takes 100% of the viewport. */
   .auth-shell {
-    display: flex;
-    flex-direction: column;
+    display: block;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     min-height: 100vh;
     min-height: 100dvh;
-    background-color: var(--color-bg-dark);
-    background-image:
-      linear-gradient(to right, rgba(246, 245, 241, 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(246, 245, 241, 0.045) 1px, transparent 1px);
-    background-size: 36px 36px;
+    background: var(--color-bg-light);
+    background-image: none;
+    overflow-x: hidden;
   }
 
-  .auth-aside {
-    display: none;
-  }
-
+  .auth-aside,
   .auth-mobile-bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: calc(1.15rem + var(--safe-top)) 5vw 0.4rem;
-    background: transparent;
-    border-bottom: none;
-  }
-
-  .auth-mobile-bar .brand-wordmark {
-    color: #f6f5f1;
-    font-size: 1.28rem;
-    gap: 0.55rem;
+    display: none !important;
   }
 
   .auth-panel {
-    flex: 1 0 auto;
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem 5vw calc(2rem + var(--safe-bottom));
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0;
+    padding: calc(1.5rem + var(--safe-top)) 5vw calc(1.5rem + var(--safe-bottom));
+    box-sizing: border-box;
   }
 
   .auth-card {
     width: 100%;
     max-width: 460px;
-    margin: auto 0;
+    min-width: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
     box-shadow: var(--shadow-modal);
+  }
+
+  .auth-card input,
+  .auth-card button,
+  .auth-card select {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .auth-card .btn-full,
+  .auth-card .stack-form > .btn {
+    width: 100%;
   }
 
   /* Mobile/Tablet Chat Split-to-Single Pane */
   .chat-shell {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     height: calc(100dvh - 185px - var(--safe-bottom));
-    min-height: 440px;
+    min-height: 320px;
     max-height: none;
+  }
+
+  /* While a chat is open on phones, hide the page title block (the top bar already says
+     "Messages") so the chat box and its message input fit above the bottom navigation. */
+  body.chat-thread-open .app-main > .page-header {
+    display: none;
   }
 
   .chat-list {
@@ -170,13 +184,13 @@
   }
 
   .hero-split {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.5rem;
   }
 
   .proof-strip,
   .step-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .cards-grid,
@@ -186,7 +200,7 @@
   }
 
   .field-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.85rem;
   }
 
@@ -229,8 +243,6 @@
     margin: 0 -1rem 0.9rem;
     padding: var(--safe-top) 0.75rem 0;
     background: var(--color-nav-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -304,8 +316,6 @@
     height: calc(58px + var(--safe-bottom));
     padding: 0 var(--safe-right) var(--safe-bottom) var(--safe-left);
     background: var(--color-nav-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border-top: 1px solid var(--color-border);
     z-index: 40;
   }
@@ -342,7 +352,7 @@
   .filter-bar,
   .theme-mode-grid,
   .color-swatch-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .btn {
@@ -387,12 +397,8 @@
 }
 
 @media (max-width: 540px) {
-  .auth-mobile-bar {
-    padding: calc(0.9rem + var(--safe-top)) 5vw 0.25rem;
-  }
-
   .auth-panel {
-    padding: 0.65rem 5vw calc(1.5rem + var(--safe-bottom));
+    padding: calc(1rem + var(--safe-top)) 5vw calc(1.25rem + var(--safe-bottom));
   }
 
   .auth-card {

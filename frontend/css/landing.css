@@ -5,8 +5,8 @@ body[data-page="landing"] {
   --color-bg-surface: #191d1a;
   --color-bg-subtle: #202521;
   --color-bg-dark: #0c0e0d;
-  --color-header-bg: rgba(17, 20, 18, 0.9);
-  --color-nav-bg: rgba(25, 29, 26, 0.96);
+  --color-header-bg: #111412;
+  --color-nav-bg: #191d1a;
   --color-text: #f2efe8;
   --color-text-secondary: #a8aea7;
   --color-border: #2c332e;
@@ -36,8 +36,6 @@ body[data-page="landing"] .site-header {
   top: 0;
   z-index: 60;
   background: var(--color-header-bg);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -223,6 +221,58 @@ body[data-page="landing"] .landing-hero {
   font-weight: 500;
   color: var(--color-accent-purple);
   margin: 0;
+}
+
+/* Website-only Android APK download (hidden inside the app by js/landing.js) */
+.landing-apk-download {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  min-height: 52px;
+  padding: 0.6rem 1.1rem 0.6rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.landing-apk-download[hidden] {
+  display: none;
+}
+
+.landing-apk-download:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.landing-apk-download:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.landing-apk-icon {
+  flex-shrink: 0;
+  color: #3ddc84;
+}
+
+.landing-apk-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+.landing-apk-text strong {
+  font-size: 0.95rem;
+}
+
+.landing-apk-text span {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
 }
 
 .landing-hero-media {
@@ -748,7 +798,7 @@ body[data-page="landing"] .site-footer {
   }
 
   .community-panel {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.5rem;
   }
 
@@ -783,7 +833,7 @@ body[data-page="landing"] .site-footer {
   .landing-hero-grid,
   .solo-split,
   .steps-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .landing-hero-media {
@@ -806,7 +856,7 @@ body[data-page="landing"] .site-footer {
   .intent-grid,
   .landing-events-grid,
   .safety-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .landing-hero-title {
@@ -826,6 +876,12 @@ body[data-page="landing"] .site-footer {
     width: 100%;
   }
 
+  .landing-apk-download {
+    display: flex;
+    align-self: stretch;
+    width: 100%;
+  }
+
   .landing-footer-columns {
     width: 100%;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -835,7 +891,7 @@ body[data-page="landing"] .site-footer {
 
 @media (max-width: 340px) {
   .landing-footer-columns {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -855,7 +911,7 @@ body[data-page="landing"] .site-footer {
   }
 
   .landing-mobile-auth {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

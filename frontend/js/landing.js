@@ -4,6 +4,7 @@
  */
 import { API } from "./api.js";
 import { escapeHtml, formatDateTime, openModal, qs, renderMediaWithFallback } from "./utils.js";
+import { isNativeApp } from "./native.js";
 
 const PRESET_PHOTO_FALLBACKS = new Map([
   ["assets/images/concert-preset.svg", "assets/images/hero-concert.jpg"],
@@ -145,8 +146,15 @@ function wireLandingFooterModals() {
   });
 }
 
+/** The APK download button is website-only: keep it hidden inside the installed app. */
+function revealApkDownloadOnWebsite() {
+  const link = qs("#landing-apk-download");
+  if (link) link.hidden = isNativeApp();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   if (document.body?.dataset?.page !== "landing") return;
+  revealApkDownloadOnWebsite();
   loadLandingEventsPreview();
   wireLandingFooterModals();
 });
